@@ -8,6 +8,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.skillstorm.inventoryManagement.dtos.InventoryDto;
+import com.skillstorm.inventoryManagement.dtos.WarehouseDto;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +42,19 @@ public class Warehouse {
 	public Warehouse() {
 		
 	}
+	
+
+	public Warehouse(Long id, String name, String address, String contactPerson, String phoneNumber,
+			List<Inventory> inventories) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.contactPerson = contactPerson;
+		this.phoneNumber = phoneNumber;
+		this.inventories = inventories;
+	}
+
 
 	public Long getId() {
 		return id;
@@ -85,6 +102,12 @@ public class Warehouse {
 
 	public void setInventories(List<Inventory> inventories) {
 		this.inventories = inventories;
+	}
+	
+	//Method that converts the entity into the DTO 
+	//DTO call warehouse into wwarehouseDto
+	public WarehouseDto toDto() {
+		return new WarehouseDto (id, name, address, contactPerson, phoneNumber);
 	}
 
 	@Override
