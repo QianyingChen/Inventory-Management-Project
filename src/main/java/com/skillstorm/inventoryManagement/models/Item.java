@@ -1,5 +1,6 @@
 package com.skillstorm.inventoryManagement.models;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -8,8 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.skillstorm.inventoryManagement.dtos.ItemDto;
 
 @Entity
 @Table(name = "items")
@@ -29,13 +33,24 @@ public class Item {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "inventory_id", nullable = false)
-    private Inventory inventory;
+    @ManyToMany(mappedBy = "items")
+    private List<Inventory> inventories;
 
     public Item() {
 		
 	}
+       
+
+	public Item(Long id, String name, Integer availableQuantity, Category category, List<Inventory> inventories) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.availableQuantity = availableQuantity;
+		this.category = category;
+		this.inventories = inventories;
+	}
+
+
 
 	public Long getId() {
 		return id;
@@ -68,18 +83,22 @@ public class Item {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-
-	public Inventory getInventory() {
-		return inventory;
+	
+	public List<Inventory> getInventories() {
+		return inventories;
 	}
 
-	public void setInventory(Inventory inventory) {
-		this.inventory = inventory;
+	public void setInventories(List<Inventory> inventories) {
+		this.inventories = inventories;
+	}
+
+	public ItemDto toDto() {
+		return new ItemDto(id, name, availableQuantity, category.getId(), inventories);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(availableQuantity, category, id, inventories, name);
 	}
 
 	@Override
@@ -91,14 +110,18 @@ public class Item {
 		if (getClass() != obj.getClass())
 			return false;
 		Item other = (Item) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(availableQuantity, other.availableQuantity) && Objects.equals(category, other.category)
+				&& Objects.equals(id, other.id) && Objects.equals(inventories, other.inventories)
+				&& Objects.equals(name, other.name);
 	}
 
 	@Override
 	public String toString() {
 		return "Item [id=" + id + ", name=" + name + ", availableQuantity=" + availableQuantity + ", category="
-				+ category + ", inventory=" + inventory + "]";
+				+ category + ", inventories=" + inventories + "]";
 	}
+
+	
     
 	
 }

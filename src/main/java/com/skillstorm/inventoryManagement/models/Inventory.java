@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -41,7 +43,11 @@ public class Inventory {
     @JoinColumn(name = "warehouse_id", nullable = false)
     private Warehouse warehouse;
 
-    @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(
+        name = "inventory_item",
+        joinColumns = @JoinColumn(name = "inventory_id"),
+        inverseJoinColumns = @JoinColumn(name = "item_id"))
     private List<ItemDto> items;
 
     @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL)

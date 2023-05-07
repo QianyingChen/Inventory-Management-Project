@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class InventoryDto {
@@ -15,16 +16,17 @@ public class InventoryDto {
     private String name;
 
     @NotNull
-    @Min(0)
+    @Min(value = 1, message = "Maximum capacity must be greater than or equal to 1")
     private Integer maxCapacity;
 
     @NotNull
-    @Min(0)
+    @Min(value = 0, message = "Current quantity must be greater than or equal to 0")
     private Integer currentQuantity;
 
     @NotNull
-    private Long warehouseId;
+    private Long warehouseId; //don't want to send all the warehouse data, but can use the warehouseId to request more information if needed
 
+    @NotEmpty
     private List<ItemDto> items;
 
     private List<TransactionDto> transactions;

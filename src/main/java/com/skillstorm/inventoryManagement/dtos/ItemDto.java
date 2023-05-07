@@ -1,11 +1,16 @@
 package com.skillstorm.inventoryManagement.dtos;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.skillstorm.inventoryManagement.models.Inventory;
+import com.skillstorm.inventoryManagement.models.Item;
 
 public class ItemDto {
     private Long id;
@@ -19,20 +24,22 @@ public class ItemDto {
     private Integer availableQuantity;
 
     @NotNull
-    private Long categoryId;
+    private CategoryDto category;
 
     @NotNull
-    private Long inventoryId;
+    private List<Long> inventoryIds;
 
     public ItemDto() {
     }
 
-    public ItemDto(Long id, String name, Integer availableQuantity, Long categoryId, Long inventoryId) {
-        this.id = id;
-        this.name = name;
-        this.availableQuantity = availableQuantity;
-        this.categoryId = categoryId;
-        this.inventoryId = inventoryId;
+    public ItemDto(Item item) {
+        this.id = item.getId();
+        this.name = item.getName();
+        this.availableQuantity = item.getAvailableQuantity();
+        this.category = new CategoryDto(item.getCategory());
+        this.inventoryIds = item.getInventories().stream()
+            .map(Inventory::getId)
+            .collect(Collectors.toList());
     }
 
 	public Long getId() {
@@ -59,25 +66,25 @@ public class ItemDto {
 		this.availableQuantity = availableQuantity;
 	}
 
-	public Long getCategoryId() {
-		return categoryId;
+	public CategoryDto getCategory() {
+		return category;
 	}
 
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
+	public void setCategory(CategoryDto category) {
+		this.category = category;
 	}
 
-	public Long getInventoryId() {
-		return inventoryId;
-	}
+	public List<Long> getInventoryIds() {
+        return inventoryIds;
+    }
 
-	public void setInventoryId(Long inventoryId) {
-		this.inventoryId = inventoryId;
-	}
+    public void setInventoryIds(List<Long> inventoryIds) {
+        this.inventoryIds = inventoryIds;
+    }
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(availableQuantity, categoryId, id, inventoryId, name);
+		return Objects.hash(availableQuantity, category, id, inventoryIds, name);
 	}
 
 	@Override
@@ -89,16 +96,19 @@ public class ItemDto {
 		if (getClass() != obj.getClass())
 			return false;
 		ItemDto other = (ItemDto) obj;
-		return Objects.equals(availableQuantity, other.availableQuantity)
-				&& Objects.equals(categoryId, other.categoryId) && Objects.equals(id, other.id)
-				&& Objects.equals(inventoryId, other.inventoryId) && Objects.equals(name, other.name);
+		return Objects.equals(availableQuantity, other.availableQuantity) && Objects.equals(category, other.category)
+				&& Objects.equals(id, other.id) && Objects.equals(inventoryIds, other.inventoryIds)
+				&& Objects.equals(name, other.name);
 	}
 
 	@Override
 	public String toString() {
-		return "ItemDto [id=" + id + ", name=" + name + ", availableQuantity=" + availableQuantity + ", categoryId="
-				+ categoryId + ", inventoryId=" + inventoryId + "]";
+		return "ItemDto [id=" + id + ", name=" + name + ", availableQuantity=" + availableQuantity + ", category="
+				+ category + ", inventoryIds=" + inventoryIds + "]";
 	}
+
+	
+	
     
     
     

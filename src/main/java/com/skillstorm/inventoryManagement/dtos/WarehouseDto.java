@@ -28,8 +28,7 @@ public class WarehouseDto {
 
     public WarehouseDto() {
     }
-    
-    
+       
 	public WarehouseDto(Long id, String name, String address, String contactPerson, String phoneNumber, List<InventoryDto> inventories) {
         this.id = id;
         this.name = name;
