@@ -10,6 +10,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.skillstorm.inventoryManagement.dtos.InventoryDto;
+import com.skillstorm.inventoryManagement.dtos.ItemDto;
+import com.skillstorm.inventoryManagement.dtos.TransactionDto;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,14 +42,27 @@ public class Inventory {
     private Warehouse warehouse;
 
     @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL)
-    private List<Item> items = new ArrayList<>();
+    private List<ItemDto> items;
 
     @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL)
-    private List<Transaction> transactions = new ArrayList<>();
+    private List<TransactionDto> transactions;
 
     public Inventory() {
 		
 	}
+
+	public Inventory(Long id, String name, Integer maxCapacity, Integer currentQuantity, Warehouse warehouse,
+			List<ItemDto> items, List<TransactionDto> transactions) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.maxCapacity = maxCapacity;
+		this.currentQuantity = currentQuantity;
+		this.warehouse = warehouse;
+		this.items = items;
+		this.transactions = transactions;
+	}
+
 
 	public Long getId() {
 		return id;
@@ -86,20 +104,26 @@ public class Inventory {
 		this.warehouse = warehouse;
 	}
 
-	public List<Item> getItems() {
+	public List<ItemDto> getItems() {
 		return items;
 	}
 
-	public void setItems(List<Item> items) {
+	public void setItems(List<ItemDto> items) {
 		this.items = items;
 	}
 
-	public List<Transaction> getTransactions() {
+	public List<TransactionDto> getTransactions() {
 		return transactions;
 	}
 
-	public void setTransactions(List<Transaction> transactions) {
+	public void setTransactions(List<TransactionDto> transactions) {
 		this.transactions = transactions;
+	}
+	
+	public InventoryDto toDto() {
+		return new InventoryDto(id, name, maxCapacity,
+			currentQuantity, warehouse.getId(), items,
+			transactions);
 	}
 
 	@Override
@@ -125,6 +149,8 @@ public class Inventory {
 				+ currentQuantity + ", warehouse=" + warehouse + ", items=" + items + ", transactions=" + transactions
 				+ "]";
 	}
+
+	
     
     
 }

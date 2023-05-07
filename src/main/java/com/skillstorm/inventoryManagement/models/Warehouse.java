@@ -24,28 +24,27 @@ public class Warehouse {
     @Column(name = "warehouse_id")
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "address", nullable = false)
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "contact_person", nullable = false)
+    @Column(name = "contact_person")
     private String contactPerson;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
-    private List<Inventory> inventories = new ArrayList<>();
+    private List<InventoryDto> inventories;
 
 	public Warehouse() {
 		
 	}
 	
-
 	public Warehouse(Long id, String name, String address, String contactPerson, String phoneNumber,
-			List<Inventory> inventories) {
+			List<InventoryDto> inventories) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -96,18 +95,18 @@ public class Warehouse {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public List<Inventory> getInventories() {
+	public List<InventoryDto> getInventories() {
 		return inventories;
 	}
 
-	public void setInventories(List<Inventory> inventories) {
+	public void setInventories(List<InventoryDto> inventories) {
 		this.inventories = inventories;
 	}
 	
 	//Method that converts the entity into the DTO 
-	//DTO call warehouse into wwarehouseDto
+	//DTO call warehouse into warehouseDto
 	public WarehouseDto toDto() {
-		return new WarehouseDto (id, name, address, contactPerson, phoneNumber);
+		return new WarehouseDto (id, name, address, contactPerson, phoneNumber, inventories);
 	}
 
 	@Override
@@ -127,14 +126,12 @@ public class Warehouse {
 		return Objects.equals(id, other.id);
 	}
 
+
 	@Override
 	public String toString() {
 		return "Warehouse [id=" + id + ", name=" + name + ", address=" + address + ", contactPerson=" + contactPerson
 				+ ", phoneNumber=" + phoneNumber + ", inventories=" + inventories + "]";
 	}
-	
-	
-	
 
     
 }

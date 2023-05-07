@@ -1,68 +1,52 @@
 package com.skillstorm.inventoryManagement.dtos;
 
+import java.util.List;
 import java.util.Objects;
 
-public class InventoryDto {
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-	private Long id;
+public class InventoryDto {
+    @NotNull
+    private Long id;
+
+    @NotBlank
     private String name;
+
+    @NotNull
+    @Min(0)
     private Integer maxCapacity;
+
+    @NotNull
+    @Min(0)
     private Integer currentQuantity;
-    private WarehouseDto warehouse;
+
+    @NotNull
+    private Long warehouseId;
+
+    private List<ItemDto> items;
+
+    private List<TransactionDto> transactions;
 
     public InventoryDto() {}
 
-    public InventoryDto(Long id, String name, Integer maxCapacity, Integer currentQuantity, WarehouseDto warehouse) {
-        this.id = id;
-        this.name = name;
-        this.maxCapacity = maxCapacity;
-        this.currentQuantity = currentQuantity;
-        this.warehouse = warehouse;
-    }
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
+	public InventoryDto(Long id, String name, Integer maxCapacity,
+			Integer currentQuantity, Long warehouseId, List<ItemDto> items,
+			List<TransactionDto> transactions) {
+		super();
 		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Integer getMaxCapacity() {
-		return maxCapacity;
-	}
-
-	public void setMaxCapacity(Integer maxCapacity) {
 		this.maxCapacity = maxCapacity;
-	}
-
-	public Integer getCurrentQuantity() {
-		return currentQuantity;
-	}
-
-	public void setCurrentQuantity(Integer currentQuantity) {
 		this.currentQuantity = currentQuantity;
-	}
-
-	public WarehouseDto getWarehouse() {
-		return warehouse;
-	}
-
-	public void setWarehouse(WarehouseDto warehouse) {
-		this.warehouse = warehouse;
+		this.warehouseId = warehouseId;
+		this.items = items;
+		this.transactions = transactions;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(currentQuantity, id, maxCapacity, name, warehouse);
+		return Objects.hash(currentQuantity, id, items, maxCapacity, name, transactions, warehouseId);
 	}
 
 	@Override
@@ -75,15 +59,17 @@ public class InventoryDto {
 			return false;
 		InventoryDto other = (InventoryDto) obj;
 		return Objects.equals(currentQuantity, other.currentQuantity) && Objects.equals(id, other.id)
-				&& Objects.equals(maxCapacity, other.maxCapacity) && Objects.equals(name, other.name)
-				&& Objects.equals(warehouse, other.warehouse);
+				&& Objects.equals(items, other.items) && Objects.equals(maxCapacity, other.maxCapacity)
+				&& Objects.equals(name, other.name) && Objects.equals(transactions, other.transactions)
+				&& Objects.equals(warehouseId, other.warehouseId);
 	}
 
 	@Override
 	public String toString() {
 		return "InventoryDto [id=" + id + ", name=" + name + ", maxCapacity=" + maxCapacity + ", currentQuantity="
-				+ currentQuantity + ", warehouse=" + warehouse + "]";
+				+ currentQuantity + ", warehouseId=" + warehouseId + ", items=" + items + ", transactions="
+				+ transactions + "]";
 	}
-    
+
     
 }

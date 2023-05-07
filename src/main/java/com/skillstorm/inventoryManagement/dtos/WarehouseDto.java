@@ -4,24 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
+import com.skillstorm.inventoryManagement.models.Inventory;
+
 public class WarehouseDto {
 	private Long id;
+	@NotBlank
     private String name;
+	
+	@NotBlank
     private String address;
+	
+	@NotBlank
     private String contactPerson;
+	
+	@NotBlank
+	@Pattern(regexp="^\\+(?:[0-9] ?){6,14}[0-9]$")
     private String phoneNumber;
-//    private List<InventoryDto> inventories = new ArrayList<>();
+	
+    private List<InventoryDto> inventories;
 
     public WarehouseDto() {
     }
-	
-    public WarehouseDto(Long id, String name, String address, String contactPerson, String phoneNumber) {
+    
+    
+	public WarehouseDto(Long id, String name, String address, String contactPerson, String phoneNumber, List<InventoryDto> inventories) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.contactPerson = contactPerson;
         this.phoneNumber = phoneNumber;
-//        this.inventories = inventories;
+        this.inventories = inventories;
     }
 
 	public Long getId() {
@@ -64,18 +79,20 @@ public class WarehouseDto {
 		this.phoneNumber = phoneNumber;
 	}
 
-//	public List<InventoryDto> getInventories() {
-//		return inventories;
-//	}
-//
-//	public void setInventories(List<InventoryDto> inventories) {
-//		this.inventories = inventories;
-//	}
+	public List<InventoryDto> getInventories() {
+		return inventories;
+	}
+
+	public void setInventories(List<InventoryDto> inventories) {
+		this.inventories = inventories;
+	}
+
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(address, contactPerson, id, name, phoneNumber);
+		return Objects.hash(address, contactPerson, id, inventories, name, phoneNumber);
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -87,16 +104,20 @@ public class WarehouseDto {
 			return false;
 		WarehouseDto other = (WarehouseDto) obj;
 		return Objects.equals(address, other.address) && Objects.equals(contactPerson, other.contactPerson)
-				&& Objects.equals(id, other.id) && Objects.equals(name, other.name)
-				&& Objects.equals(phoneNumber, other.phoneNumber);
+				&& Objects.equals(id, other.id) && Objects.equals(inventories, other.inventories)
+				&& Objects.equals(name, other.name) && Objects.equals(phoneNumber, other.phoneNumber);
 	}
+
 
 	@Override
 	public String toString() {
 		return "WarehouseDto [id=" + id + ", name=" + name + ", address=" + address + ", contactPerson=" + contactPerson
-				+ ", phoneNumber=" + phoneNumber + "]";
+				+ ", phoneNumber=" + phoneNumber + ", inventories=" + inventories + "]";
 	}
-    
+
+
+	
+
     
     
     
